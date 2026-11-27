@@ -1,0 +1,39 @@
+class Solution:
+    def shortestPath(self, grid: List[List[int]]) -> int:
+        if grid[0][0] == 1:
+            return -1
+
+        ROWS, COLS = len(grid), len(grid[0])
+        queue = deque()
+        visit = set()
+
+        queue.append((0, 0))
+        visit.add((0, 0))
+
+        length = 0
+
+        while queue:
+            for _ in range(len(queue)):
+                r, c = queue.popleft()
+
+                if r == ROWS - 1 and c == COLS - 1:
+                    return length
+
+                neighbours = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+                for dr, dc in neighbours:
+                    nr = r + dr
+                    nc = c + dc
+
+                    if (min(nr, nc) < 0 or 
+                    nr == ROWS or nc == COLS or
+                    (nr, nc) in visit or
+                    grid[nr][nc] == 1):
+                        continue
+
+                    queue.append((nr, nc))
+                    visit.add((nr, nc))
+
+            length += 1
+
+        return -1
